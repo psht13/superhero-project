@@ -1,0 +1,11 @@
+{
+  "name": "superhero-project",
+  "version": "1.0.0",
+  "description": "mini-project about superheroes ",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pavlo Yurchenko",
+  "license": "MIT"
+}
