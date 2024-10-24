@@ -13,10 +13,7 @@ import { parsePaginationParams } from '../utils/parse-pagination-params.js';
 export const getAllSuperheroesController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
 
-  const data = await getAllSuperheroes({
-    page,
-    perPage,
-  });
+  const data = await getAllSuperheroes(page, perPage);
 
   const { superheroes, totalItems, totalPages, hasNextPage, hasPreviousPage } =
     data;

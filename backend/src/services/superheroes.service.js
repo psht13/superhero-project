@@ -5,10 +5,11 @@ import { calculatePaginationData } from '../utils/calculate-pagination-data.js';
 export const getAllSuperheroes = async (page, perPage) => {
   const limit = perPage;
   const skip = (page - 1) * perPage;
+  const superheroQuery = SuperheroCollection.find();
 
   const [totalItems, superheroes] = await Promise.all([
     await SuperheroCollection.countDocuments(),
-    await SuperheroCollection.find().skip(skip).limit(limit),
+    await superheroQuery.skip(skip).limit(limit),
   ]);
 
   const paginationData = calculatePaginationData(totalItems, perPage, page);
