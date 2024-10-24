@@ -8,18 +8,41 @@ import {
 
 export const useSuperheroes = create((set, get) => ({
   superheroes: [],
-  page: 1,
+  pagination: {
+    page: 1,
+    totalPages: 1,
+    hasNextPage: false,
+    hasPreviousPage: false,
+  },
   isLoading: false,
   isError: false,
+
+  setPage: (page) => {
+    const { pagination } = get();
+    set({
+      pagination: {
+        ...pagination,
+        page: page,
+      },
+    });
+  },
 
   getSuperheroes: async () => {
     try {
       set({ isLoading: true });
-      const { page } = get(); // Access page from the state
-      const response = await getAllSuperheroes(page, 3);
+      const { pagination } = get();
+      const response = await getAllSuperheroes(pagination.page, 5);
 
       if (response.data?.superheroes) {
         set({ superheroes: response.data.superheroes, isError: false });
+        set({
+          pagination: {
+            page: response.data.page,
+            totalPages: response.data.totalPages,
+            hasNextPage: response.data.hasNextPage,
+            hasPreviousPage: response.data.hasPreviousPage,
+          },
+        });
       } else {
         set({ isError: true });
       }
@@ -32,8 +55,8 @@ export const useSuperheroes = create((set, get) => ({
 
   deleteSuperhero: async (heroId) => {
     try {
-      const { superheroes } = get(); // Get current state
-      const response = await deleteSuperhero(heroId); // Await for the deletion
+      const { superheroes } = get();
+      const response = await deleteSuperhero(heroId);
       if (response) {
         set({
           superheroes: superheroes.filter((hero) => hero._id !== heroId),
@@ -49,8 +72,8 @@ export const useSuperheroes = create((set, get) => ({
 
   updateSuperhero: async (heroId, body) => {
     try {
-      const { superheroes } = get(); // Get current state
-      const response = await updateSuperhero(heroId, body); // Await for the update
+      const { superheroes } = get();
+      const response = await updateSuperhero(heroId, body);
       if (response) {
         set({
           superheroes: superheroes.map((hero) =>
@@ -68,8 +91,8 @@ export const useSuperheroes = create((set, get) => ({
 
   createSuperhero: async (body) => {
     try {
-      const { superheroes } = get(); // Get current state
-      const response = await createSuperhero(body); // Await for creation
+      const { superheroes } = get();
+      const response = await createSuperhero(body);
       if (response) {
         set({
           superheroes: [response.data.superhero, ...superheroes],
@@ -82,8 +105,6 @@ export const useSuperheroes = create((set, get) => ({
       set({ isError: true });
     }
   },
-
-  setPage: (page) => set({ page }),
   setIsLoading: (isLoading) => set({ isLoading }),
   setIsError: (isError) => set({ isError }),
 }));

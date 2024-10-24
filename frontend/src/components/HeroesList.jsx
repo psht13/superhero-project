@@ -6,7 +6,7 @@ const HeroesList = () => {
 
   return (
     <div className="w-full h-full">
-      <div className="flex justify-center items-center w-full gap-4">
+      <div className="flex justify-center items-center w-full gap-4 h-[250px]">
         {superheroes.map((hero) => (
           <HeroCard
             key={hero._id}
